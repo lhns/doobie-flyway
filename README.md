@@ -12,5 +12,32 @@ Flyway migrations for doobie.
 libraryDependencies += "de.lolhens" %% "doobie-flyway" % "0.2.0"
 ```
 
+## Usage
+```scala
+def transactor(config: DbConfig): Resource[IO, Transactor[IO]] =
+  for {
+    ce <- ExecutionContexts.fixedThreadPool[IO](config.poolSizeOrDefault)
+    xa <- HikariTransactor
+            .newHikariTransactor[IO](
+              config.driverOrDefault,
+              config.url,
+              config.user,
+              config.password,
+              ce
+            )
+    _  <- Flyway(xa) { flyway =>
+            for {
+              info <- flyway.info()
+              _    <- flyway
+                        .configure(_
+                          .withBaselineMigrate(info)
+                          .validateMigrationNaming(true)
+                        )
+                        .migrate()
+            } yield ()
+          }
+  } yield xa
+```
+
 ## License
 This project uses the Apache 2.0 License. See the file called LICENSE.
