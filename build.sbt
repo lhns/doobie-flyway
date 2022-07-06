@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := scalaVersions.head
 ThisBuild / versionScheme := Some("early-semver")
 
 lazy val commonSettings: SettingsDefinition = Def.settings(
-  organization := "de.lolhens",
+  organization := "de.lhns",
   version := {
     val Tag = "refs/tags/(.*)".r
     sys.env.get("CI_VERSION").collect { case Tag(tag) => tag }
@@ -43,7 +43,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
 
   publishTo := sonatypePublishToBundle.value,
 
-  //sonatypeCredentialHost := "s01.oss.sonatype.org",
+  sonatypeCredentialHost := "s01.oss.sonatype.org",
 
   credentials ++= (for {
     username <- sys.env.get("SONATYPE_USERNAME")
@@ -53,15 +53,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
     sonatypeCredentialHost.value,
     username,
     password
-  )).toList,
-
-  pomExtra := {
-    <distributionManagement>
-      <relocation>
-        <groupId>de.lhns</groupId>
-      </relocation>
-    </distributionManagement>
-  }
+  )).toList
 )
 
 name := (core.projectRefs.head / name).value
