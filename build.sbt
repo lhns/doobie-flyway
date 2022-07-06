@@ -43,15 +43,25 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
 
   publishTo := sonatypePublishToBundle.value,
 
+  //sonatypeCredentialHost := "s01.oss.sonatype.org",
+
   credentials ++= (for {
     username <- sys.env.get("SONATYPE_USERNAME")
     password <- sys.env.get("SONATYPE_PASSWORD")
   } yield Credentials(
     "Sonatype Nexus Repository Manager",
-    "oss.sonatype.org",
+    sonatypeCredentialHost.value,
     username,
     password
-  )).toList
+  )).toList,
+
+  pomExtra := {
+    <distributionManagement>
+      <relocation>
+        <groupId>de.lhns</groupId>
+      </relocation>
+    </distributionManagement>
+  }
 )
 
 name := (core.projectRefs.head / name).value
