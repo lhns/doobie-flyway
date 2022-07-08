@@ -60,7 +60,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
     password
   )).toList,
 
-  pomExtra ~= { pomExtra =>
+  pomExtra := {
     if (sonatypeProfileName.value == "de.lolhens")
       <distributionManagement>
         <relocation>
@@ -68,7 +68,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
         </relocation>
       </distributionManagement>
     else
-      pomExtra
+      pomExtra.value
   }
 )
 
