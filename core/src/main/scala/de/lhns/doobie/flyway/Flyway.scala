@@ -66,9 +66,8 @@ final class Flyway[F[_]] private(configuration: FluentConfiguration) {
     }
   }
 
-  def clean(confirm: Boolean)(implicit F: Sync[F]): F[CleanResult] = apply { configuration =>
+  def clean()(implicit F: Sync[F]): F[CleanResult] = apply { configuration =>
     Sync[F].blocking {
-      require(confirm, "please confirm that you want to clean the database")
       configuration
         .load()
         .clean()

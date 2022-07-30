@@ -13,7 +13,7 @@ import scala.jdk.CollectionConverters._
 
 object BaselineMigrations {
   implicit class BaselineMigrationOps(val configuration: FluentConfiguration) extends AnyVal {
-    def withBaselineMigrate(info: MigrationInfoService): FluentConfiguration = {
+    def withBaselineMigrate(info: MigrationInfoService, baselineMigrationPrefix: String = "B"): FluentConfiguration = {
       val firstAppliedScriptOption = info
         .applied()
         .headOption
@@ -55,7 +55,7 @@ object BaselineMigrations {
             .groupMap(_._1)(e => (e._2, e._3))
 
           val latestBaselineOption = {
-            val baselineResources = resourcesByType.getOrElse(configuration.getBaselineMigrationPrefix, Seq.empty)
+            val baselineResources = resourcesByType.getOrElse(baselineMigrationPrefix, Seq.empty)
             firstAppliedScriptOption.fold {
               baselineResources.maxByOption(_._1)
             } { fileName =>
@@ -71,7 +71,7 @@ object BaselineMigrations {
             override def getAbsolutePathOnDisk: String = resource.getAbsolutePathOnDisk
 
             override def getFilename: String = resource.getFilename.replaceFirst(
-              "^" + Pattern.quote(configuration.getBaselineMigrationPrefix),
+              "^" + Pattern.quote(baselineMigrationPrefix),
               configuration.getSqlMigrationPrefix
             )
 
@@ -91,7 +91,7 @@ object BaselineMigrations {
                 }
                 .map(_._2) ++
               resourcesByType
-                .removed(configuration.getBaselineMigrationPrefix)
+                .removed(baselineMigrationPrefix)
                 .removed(configuration.getSqlMigrationPrefix)
                 .values
                 .flatMap(_.map(_._2))
