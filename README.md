@@ -9,7 +9,7 @@
 
 ### build.sbt
 ```sbt
-libraryDependencies += "de.lhns" %% "doobie-flyway" % "0.2.9"
+libraryDependencies += "de.lhns" %% "doobie-flyway" % "0.3.0"
 ```
 
 ## Usage
