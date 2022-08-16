@@ -76,7 +76,7 @@ name := (core.projectRefs.head / name).value
 
 val V = new {
   val doobie = "1.0.0-RC2"
-  val flyway = "9.1.3"
+  val flyway = "9.1.4"
 }
 
 lazy val root: Project =
