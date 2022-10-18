@@ -19,19 +19,7 @@ object BaselineMigrations {
         .headOption
         .map(_.getScript)
 
-      val resourceProvider = Option(configuration.getResourceProvider).getOrElse {
-        new Scanner[JavaMigration](
-          classOf[JavaMigration],
-          util.Arrays.asList(configuration.getLocations: _*),
-          configuration.getClassLoader,
-          configuration.getEncoding,
-          configuration.isDetectEncoding,
-          false,
-          new ResourceNameCache,
-          new LocationScannerCache,
-          configuration.isFailOnMissingLocations
-        )
-      }
+      val resourceProvider = configuration.resourceProviderOrDefault
 
       configuration.resourceProvider(new ResourceProvider {
         override def getResource(name: String): LoadableResource =
