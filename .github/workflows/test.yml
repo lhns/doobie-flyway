@@ -19,5 +19,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+          cache: 'sbt'
       - name: Run tests
         run: sbt -mem 2048 "; test"
