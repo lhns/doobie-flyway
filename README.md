@@ -1,5 +1,6 @@
 # doobie-flyway
-[![Test Workflow](https://github.com/lhns/doobie-flyway/workflows/test/badge.svg)](https://github.com/lhns/doobie-flyway/actions?query=workflow%3Atest)
+
+[![build](https://github.com/lhns/doobie-flyway/actions/workflows/build.yml/badge.svg)](https://github.com/lhns/doobie-flyway/actions/workflows/build.yml)
 [![Release Notes](https://img.shields.io/github/release/lhns/doobie-flyway.svg?maxAge=3600)](https://github.com/lhns/doobie-flyway/releases/latest)
 [![Maven Central](https://img.shields.io/maven-central/v/de.lhns/doobie-flyway_2.13)](https://search.maven.org/artifact/de.lhns/doobie-flyway_2.13)
 [![Apache License 2.0](https://img.shields.io/github/license/lhns/doobie-flyway.svg?maxAge=3600)](https://www.apache.org/licenses/LICENSE-2.0)
