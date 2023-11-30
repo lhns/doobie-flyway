@@ -1,9 +1,9 @@
 package de.lhns.doobie
 
+import org.flywaydb.core.api.ResourceProvider
 import org.flywaydb.core.api.configuration.FluentConfiguration
 import org.flywaydb.core.api.migration.JavaMigration
 import org.flywaydb.core.api.resource.LoadableResource
-import org.flywaydb.core.api.{MigrationInfoService, ResourceProvider}
 import org.flywaydb.core.internal.scanner.{LocationScannerCache, ResourceNameCache, Scanner}
 
 import java.io.{Reader, StringReader}
