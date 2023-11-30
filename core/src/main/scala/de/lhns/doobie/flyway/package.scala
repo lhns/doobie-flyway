@@ -17,14 +17,10 @@ package object flyway {
     def resourceProviderOrDefault: ResourceProvider = resourceProviderOption.getOrElse {
       new Scanner[JavaMigration](
         classOf[JavaMigration],
-        util.Arrays.asList(configuration.getLocations: _*),
-        configuration.getClassLoader,
-        configuration.getEncoding,
-        configuration.isDetectEncoding,
         false,
         new ResourceNameCache,
         new LocationScannerCache,
-        configuration.isFailOnMissingLocations
+        configuration
       )
     }
 
