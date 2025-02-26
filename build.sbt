@@ -10,7 +10,7 @@ val V = new {
   val betterMonadicFor = "0.3.1"
   val doobie = "1.0.0-RC5"
   val flyway = "10.13.0"
-  val logbackClassic = "1.4.14"
+  val logbackClassic = "1.5.17"
   val munit = "1.0.0"
   val munitTaglessFinal = "0.2.0"
 }
