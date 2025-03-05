@@ -1,4 +1,4 @@
-lazy val scalaVersions = Seq("3.3.3", "2.13.14")
+lazy val scalaVersions = Seq("3.3.5", "2.13.16")
 
 ThisBuild / scalaVersion := scalaVersions.head
 ThisBuild / versionScheme := Some("early-semver")
@@ -8,9 +8,9 @@ name := (core.projectRefs.head / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
-  val doobie = "1.0.0-RC5"
+  val doobie = "1.0.0-RC8"
   val flyway = "10.22.0"
-  val logbackClassic = "1.4.14"
+  val logbackClassic = "1.5.17"
   val munit = "1.0.0"
   val munitTaglessFinal = "0.2.0"
 }
