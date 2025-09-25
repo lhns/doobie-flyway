@@ -85,7 +85,6 @@ lazy val core = projectMatrix.in(file("core"))
     libraryDependencies ++= Seq(
       "org.flywaydb" % "flyway-core" % V.flyway,
       "org.tpolecat" %% "doobie-core" % V.doobie,
-      "org.tpolecat" %% "doobie-munit" % V.doobie % Test,
       "org.tpolecat" %% "doobie-h2" % V.doobie % Test,
     ),
   )
