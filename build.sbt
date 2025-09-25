@@ -12,7 +12,7 @@ val V = new {
   val flyway = "11.13.1"
   val logbackClassic = "1.5.18"
   val munit = "1.2.0"
-  val munitTaglessFinal = "0.2.0"
+  val munitCatsEffect = "2.1.0"
 }
 
 lazy val commonSettings: SettingsDefinition = Def.settings(
@@ -37,7 +37,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
 
   libraryDependencies ++= Seq(
     "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
-    "de.lolhens" %% "munit-tagless-final" % V.munitTaglessFinal % Test,
+    "org.typelevel" %% "munit-cats-effect" % V.munitCatsEffect % Test,
     "org.scalameta" %% "munit" % V.munit % Test,
   ),
 
@@ -85,6 +85,8 @@ lazy val core = projectMatrix.in(file("core"))
     libraryDependencies ++= Seq(
       "org.flywaydb" % "flyway-core" % V.flyway,
       "org.tpolecat" %% "doobie-core" % V.doobie,
+      "org.tpolecat" %% "doobie-munit" % V.doobie % Test,
+      "org.tpolecat" %% "doobie-h2" % V.doobie % Test,
     ),
   )
   .jvmPlatform(scalaVersions)
