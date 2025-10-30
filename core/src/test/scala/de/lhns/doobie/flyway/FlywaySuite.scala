@@ -26,7 +26,7 @@ class FlywaySuite extends CatsEffectSuite {
             )
             .migrate()
         } yield ()
-      }
+      }.toResource
     } yield ()).use_
   }
 }
