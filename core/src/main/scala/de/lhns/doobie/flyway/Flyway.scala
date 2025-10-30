@@ -77,7 +77,7 @@ final class Flyway[F[_]] private(configuration: FluentConfiguration) {
 
 object Flyway {
   def apply[F[_], A <: DataSource, B](transactor: Transactor.Aux[F, A])
-                                     (f: Flyway[F] => F[B]): Resource[F, B] = Resource.eval {
+                                     (f: Flyway[F] => F[B]): F[B] = {
     transactor.configure { dataSource =>
       val flyway = new Flyway[F](
         org.flywaydb.core.Flyway.configure
