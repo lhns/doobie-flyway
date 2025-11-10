@@ -36,7 +36,7 @@ def transactor(config: DbConfig): Resource[IO, Transactor[IO]] =
                         )
                         .migrate()
             } yield ()
-          }
+          }.toResource
   } yield xa
 ```
 
