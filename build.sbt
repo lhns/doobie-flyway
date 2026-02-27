@@ -11,7 +11,7 @@ val V = new {
   val doobie = "1.0.0-RC12"
   val flyway = "11.20.3"
   val logbackClassic = "1.5.32"
-  val munit = "1.2.2"
+  val munit = "1.2.3"
   val munitCatsEffect = "2.1.0"
 }
 
