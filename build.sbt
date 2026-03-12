@@ -35,19 +35,6 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
     Developer(id = "lhns", name = "Pierre Kisters", email = "pierrekisters@gmail.com", url = url("https://github.com/lhns/"))
   ),
 
-  libraryDependencies ++= Seq(
-    "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
-    "org.typelevel" %% "munit-cats-effect" % V.munitCatsEffect % Test,
-    "org.scalameta" %% "munit" % V.munit % Test,
-  ),
-
-  testFrameworks += new TestFramework("munit.Framework"),
-
-  libraryDependencies ++= virtualAxes.?.value.getOrElse(Seq.empty).collectFirst {
-    case VirtualAxis.ScalaVersionAxis(version, _) if version.startsWith("2.") =>
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor)
-  },
-
   Compile / doc / sources := Seq.empty,
 
   publishMavenStyle := true,
@@ -67,6 +54,21 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
   )).toList
 )
 
+lazy val scalaSettings: SettingsDefinition = Def.settings(
+  libraryDependencies ++= Seq(
+    "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
+    "org.typelevel" %% "munit-cats-effect" % V.munitCatsEffect % Test,
+    "org.scalameta" %% "munit" % V.munit % Test,
+  ),
+
+  testFrameworks += new TestFramework("munit.Framework"),
+
+  libraryDependencies ++= virtualAxes.?.value.getOrElse(Seq.empty).collectFirst {
+    case VirtualAxis.ScalaVersionAxis(version, _) if version.startsWith("2.") =>
+      compilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor)
+  },
+)
+
 lazy val root: Project =
   project
     .in(file("."))
@@ -75,10 +77,23 @@ lazy val root: Project =
       publishArtifact := false,
       publish / skip := true
     )
-    .aggregate(core.projectRefs: _*)
+    .aggregate(flywayBaseline, core.projectRefs: _*)
+
+lazy val flywayBaseline = project.in(file("flyway-baseline"))
+  .settings(commonSettings)
+  .settings(
+    name := "flyway-baseline",
+    crossPaths := false,
+    autoScalaLibrary := false,
+
+    libraryDependencies ++= Seq(
+      "org.flywaydb" % "flyway-core" % V.flyway,
+    ),
+  )
 
 lazy val core = projectMatrix.in(file("core"))
   .settings(commonSettings)
+  .settings(scalaSettings)
   .settings(
     name := "doobie-flyway",
 
@@ -88,4 +103,5 @@ lazy val core = projectMatrix.in(file("core"))
       "org.tpolecat" %% "doobie-h2" % V.doobie % Test,
     ),
   )
+  .dependsOn(flywayBaseline)
   .jvmPlatform(scalaVersions)
