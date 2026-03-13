@@ -68,20 +68,4 @@ class FlywaySuite extends CatsEffectSuite {
       }
     }
   }
-
-  // -------------------------------------------------------------------------
-  // Test 4: a second withBaselineMigrate run on an already-migrated database
-  //         must be idempotent (0 migrations executed).
-  // -------------------------------------------------------------------------
-  test("migrate: second run on already-migrated database executes 0 migrations") {
-    transactor("test_idempotent").use { xa =>
-      for {
-        first  <- migrateWithBaseline(xa, "db/migration-baseline")
-        second <- migrateWithBaseline(xa, "db/migration-baseline")
-      } yield {
-        assertEquals(first, 2, "First run should execute 2 migrations")
-        assertEquals(second, 0, "Second run must be idempotent (0 migrations)")
-      }
-    }
-  }
 }

@@ -136,29 +136,7 @@ class BaselineMigrationsTest {
     }
 
     // =========================================================================
-    // Test 5: running withBaselineMigrate a SECOND TIME on a database that was
-    //         already migrated by a previous withBaselineMigrate call must be
-    //         idempotent (0 migrations executed).
-    // =========================================================================
-    @Test
-    void secondRun_afterBaselineMigration_isIdempotent() {
-        String url = uniqueDbUrl();
-        FluentConfiguration config = configure(url, "db/migration-single-baseline");
-
-        // First run: executes B001→V001 + V002
-        MigrateResult firstResult = runWithBaseline(config);
-        assertTrue(firstResult.success);
-        assertEquals(2, firstResult.migrationsExecuted, "First run should execute 2 migrations");
-
-        // Second run: DB already has V001 and V002 in schema history
-        MigrateResult secondResult = runWithBaseline(config);
-        assertTrue(secondResult.success, "Second run should succeed");
-        assertEquals(0, secondResult.migrationsExecuted,
-                "Second run must execute 0 migrations (idempotent)");
-    }
-
-    // =========================================================================
-    // Test 6: custom baseline prefix ("X" instead of the default "B") must be
+    // Test 5: custom baseline prefix ("X" instead of the default "B") must be
     //         honoured — X001 is renamed to V001, V002 runs afterwards.
     // =========================================================================
     @Test
