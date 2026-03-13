@@ -1,0 +1,1 @@
+ALTER TABLE baseline_test ADD COLUMN name VARCHAR(100);

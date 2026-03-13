@@ -1,0 +1,1 @@
+CREATE TABLE multi_b1 (id INT PRIMARY KEY);

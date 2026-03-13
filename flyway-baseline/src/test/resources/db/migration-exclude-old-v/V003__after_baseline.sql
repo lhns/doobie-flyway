@@ -1,0 +1,1 @@
+ALTER TABLE exclude_old ADD COLUMN name VARCHAR(100);

@@ -1,0 +1,1 @@
+ALTER TABLE multi_b2 ADD COLUMN name VARCHAR(100);

@@ -10,6 +10,9 @@ val V = new {
   val betterMonadicFor = "0.3.1"
   val doobie = "1.0.0-RC12"
   val flyway = "11.20.3"
+  val h2 = "2.3.232"
+  val junitJupiter = "5.10.3"
+  val junitInterface = "0.13.3"
   val logbackClassic = "1.5.32"
   val munit = "1.2.2"
   val munitCatsEffect = "2.1.0"
@@ -88,6 +91,9 @@ lazy val flywayBaseline = project.in(file("flyway-baseline"))
 
     libraryDependencies ++= Seq(
       "org.flywaydb" % "flyway-core" % V.flyway,
+      "com.h2database" % "h2" % V.h2 % Test,
+      "org.junit.jupiter" % "junit-jupiter" % V.junitJupiter % Test,
+      "com.github.sbt" % "junit-interface" % V.junitInterface % Test,
     ),
   )
 

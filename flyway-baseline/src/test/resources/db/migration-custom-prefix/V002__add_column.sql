@@ -1,0 +1,1 @@
+ALTER TABLE custom_prefix ADD COLUMN name VARCHAR(100);

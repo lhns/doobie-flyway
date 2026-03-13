@@ -1,0 +1,1 @@
+CREATE TABLE exclude_old (id INT PRIMARY KEY);

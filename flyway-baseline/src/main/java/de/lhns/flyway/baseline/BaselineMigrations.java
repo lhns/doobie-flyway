@@ -76,8 +76,17 @@ public final class BaselineMigrations {
                             .max(Comparator.comparingInt(Map.Entry::getKey))
                             .orElse(null);
                 } else {
+                    // Compare against the RENAMED (V-prefixed) filename, because after the
+                    // first run the baseline is stored in the schema history under its
+                    // renamed name (e.g. "V001__init.sql", not "B001__init.sql").
                     latestBaseline = baselineResources.stream()
-                            .filter(e -> e.getValue().getFilename().equals(firstAppliedScript))
+                            .filter(e -> {
+                                String renamed = e.getValue().getFilename().replaceFirst(
+                                        "^" + Pattern.quote(baselineMigrationPrefix),
+                                        Matcher.quoteReplacement(sqlMigrationPrefix)
+                                );
+                                return renamed.equals(firstAppliedScript);
+                            })
                             .findFirst()
                             .orElse(null);
                 }
