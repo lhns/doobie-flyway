@@ -3,7 +3,7 @@ package de.lhns.doobie.flyway
 import cats.Functor
 import cats.effect.{Resource, Sync}
 import cats.syntax.functor._
-import doobie.Transactor
+import org.typelevel.doobie.Transactor
 import org.flywaydb.core.api.MigrationInfoService
 import org.flywaydb.core.api.configuration.FluentConfiguration
 import org.flywaydb.core.api.output._
