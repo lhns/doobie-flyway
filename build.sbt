@@ -8,7 +8,7 @@ name := (core.projectRefs.head / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
-  val doobie = "1.0.0-RC12"
+  val doobie = "1.0.0-RC13"
   val flyway = "11.20.3"
   val logbackClassic = "1.5.38"
   val munit = "1.2.2"
@@ -84,8 +84,8 @@ lazy val core = projectMatrix.in(file("core"))
 
     libraryDependencies ++= Seq(
       "org.flywaydb" % "flyway-core" % V.flyway,
-      "org.tpolecat" %% "doobie-core" % V.doobie,
-      "org.tpolecat" %% "doobie-h2" % V.doobie % Test,
+      "org.typelevel" %% "doobie-core" % V.doobie,
+      "org.typelevel" %% "doobie-h2" % V.doobie % Test,
     ),
   )
   .jvmPlatform(scalaVersions)

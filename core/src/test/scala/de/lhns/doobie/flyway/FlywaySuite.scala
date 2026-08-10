@@ -2,8 +2,8 @@ package de.lhns.doobie.flyway
 
 import cats.effect.IO
 import de.lhns.doobie.flyway.BaselineMigrations._
-import doobie.ExecutionContexts
-import doobie.h2.H2Transactor
+import org.typelevel.doobie.ExecutionContexts
+import org.typelevel.doobie.h2.H2Transactor
 import munit.CatsEffectSuite
 
 class FlywaySuite extends CatsEffectSuite {
