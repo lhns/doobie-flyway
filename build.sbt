@@ -3,13 +3,14 @@ lazy val scalaVersions = Seq("3.3.8", "2.13.18")
 ThisBuild / scalaVersion := scalaVersions.head
 ThisBuild / versionScheme := Some("early-semver")
 ThisBuild / organization := "de.lhns"
-ThisBuild / version := (core.projectRefs.head / version).value
-name := (core.projectRefs.head / name).value
+ThisBuild / version := (doobieFlyway.projectRefs.head / version).value
+name := (doobieFlyway.projectRefs.head / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
   val doobie = "1.0.0-RC13"
-  val flyway = "11.20.3"
+  val flyway = "13.2.0"
+  val h2 = "2.4.240"
   val logbackClassic = "1.6.1"
   val munit = "1.2.2"
   val munitCatsEffect = "2.2.0"
@@ -35,18 +36,7 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
     Developer(id = "lhns", name = "Pierre Kisters", email = "pierrekisters@gmail.com", url = url("https://github.com/lhns/"))
   ),
 
-  libraryDependencies ++= Seq(
-    "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
-    "org.typelevel" %% "munit-cats-effect" % V.munitCatsEffect % Test,
-    "org.scalameta" %% "munit" % V.munit % Test,
-  ),
-
   testFrameworks += new TestFramework("munit.Framework"),
-
-  libraryDependencies ++= virtualAxes.?.value.getOrElse(Seq.empty).collectFirst {
-    case VirtualAxis.ScalaVersionAxis(version, _) if version.startsWith("2.") =>
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor)
-  },
 
   Compile / doc / sources := Seq.empty,
 
@@ -67,6 +57,21 @@ lazy val commonSettings: SettingsDefinition = Def.settings(
   )).toList
 )
 
+// Settings for modules whose main sources are Scala. Not applied to flywayBaseline, which
+// is Java-only in Compile and only pulls Scala in for its tests.
+lazy val scalaSettings: SettingsDefinition = Def.settings(
+  libraryDependencies ++= Seq(
+    "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
+    "org.typelevel" %% "munit-cats-effect" % V.munitCatsEffect % Test,
+    "org.scalameta" %% "munit" % V.munit % Test,
+  ),
+
+  libraryDependencies ++= virtualAxes.?.value.getOrElse(Seq.empty).collectFirst {
+    case VirtualAxis.ScalaVersionAxis(version, _) if version.startsWith("2.") =>
+      compilerPlugin("com.olegpy" %% "better-monadic-for" % V.betterMonadicFor)
+  },
+)
+
 lazy val root: Project =
   project
     .in(file("."))
@@ -75,10 +80,34 @@ lazy val root: Project =
       publishArtifact := false,
       publish / skip := true
     )
-    .aggregate(core.projectRefs: _*)
+    .aggregate(flywayBaseline)
+    .aggregate(doobieFlyway.projectRefs: _*)
 
-lazy val core = projectMatrix.in(file("core"))
+// Java-only artifact: the Flyway baseline-migration support carries no doobie, cats-effect
+// or Scala dependency, so it is usable from plain Java. Tests are Scala (munit) but never
+// leak into the published Compile classpath.
+lazy val flywayBaseline = project.in(file("flyway-baseline"))
   .settings(commonSettings)
+  .settings(
+    name := "flyway-baseline",
+
+    crossPaths := false,
+    autoScalaLibrary := false,
+
+    javacOptions ++= Seq("--release", "17"),
+
+    libraryDependencies ++= Seq(
+      "org.flywaydb" % "flyway-core" % V.flyway,
+      "org.scala-lang" %% "scala3-library" % scalaVersion.value % Test,
+      "org.scalameta" %% "munit" % V.munit % Test,
+      "com.h2database" % "h2" % V.h2 % Test,
+      "ch.qos.logback" % "logback-classic" % V.logbackClassic % Test,
+    ),
+  )
+
+lazy val doobieFlyway = projectMatrix.in(file("doobie-flyway"))
+  .settings(commonSettings)
+  .settings(scalaSettings)
   .settings(
     name := "doobie-flyway",
 
@@ -88,4 +117,5 @@ lazy val core = projectMatrix.in(file("core"))
       "org.typelevel" %% "doobie-h2" % V.doobie % Test,
     ),
   )
+  .dependsOn(flywayBaseline)
   .jvmPlatform(scalaVersions)
