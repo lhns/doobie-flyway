@@ -1,4 +1,4 @@
-lazy val scalaVersions = Seq("3.3.8", "2.13.18")
+lazy val scalaVersions = Seq("3.3.8", "3.9.0")
 
 ThisBuild / scalaVersion := scalaVersions.head
 ThisBuild / versionScheme := Some("early-semver")
