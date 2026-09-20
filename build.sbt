@@ -13,7 +13,7 @@ val V = new {
   val h2 = "2.4.240"
   val logbackClassic = "1.6.1"
   val munit = "1.2.4"
-  val munitCatsEffect = "2.2.0"
+  val munitCatsEffect = "2.2.1"
 }
 
 lazy val commonSettings: SettingsDefinition = Def.settings(
