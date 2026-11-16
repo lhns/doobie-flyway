@@ -1,4 +1,4 @@
-lazy val scalaVersions = Seq("3.3.8", "2.13.18")
+lazy val scalaVersions = Seq("3.3.9", "2.13.18")
 
 ThisBuild / scalaVersion := scalaVersions.head
 ThisBuild / versionScheme := Some("early-semver")
@@ -8,12 +8,12 @@ name := (doobieFlyway.projectRefs.head / name).value
 
 val V = new {
   val betterMonadicFor = "0.3.1"
-  val doobie = "1.0.0-RC13"
-  val flyway = "13.2.0"
-  val h2 = "2.4.240"
-  val logbackClassic = "1.6.1"
-  val munit = "1.2.4"
-  val munitCatsEffect = "2.2.0"
+  val doobie = "1.0.0-RC14"
+  val flyway = "13.12.1"
+  val h2 = "2.5.252"
+  val logbackClassic = "1.6.6"
+  val munit = "1.3.6"
+  val munitCatsEffect = "2.2.1"
 }
 
 lazy val commonSettings: SettingsDefinition = Def.settings(
